@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    mybatis核心配置文件-->
+    <!--读取properties文件-->
+    <properties resource="db.properties"></properties>
+
+    <!-- 开启延迟加载 -->
+    <settings>
+        <!-- 将积极加载改为消极加载，即延迟加载 mybatis3.4.1及以下版本默认值为true mybatis3.4.5 默认值为false -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <!--解决延迟加载失效 -->
+        <setting name="aggressiveLazyLoading" value="false" />
+        <setting name="lazyLoadTriggerMethods" value="" />
+        
+        <!-- 二级缓存开启-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!--    分页插件-->
+    <!--配置pageHelper拦截器-->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <property name="param1" value="value1"/>
+        </plugin>
+    </plugins>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--注册mapper.xml-->
+    <mappers>
+<!--        批量扫描注册mapper.xml  -->
+        <package name="com.wry.dao"/>
+    </mappers>
+
+</configuration>

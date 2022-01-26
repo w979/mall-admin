@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- for database connection. 路径是相较于 resources 的相对路径 -->
+    <properties resource="generator.properties"/>
+
+    <context id="scott" targetRuntime="${runtime}">
+        <!-- 以前 mapper.xml 文件内容是在原文件上追加，而不是直接覆盖，导致了这个错误。1.3.7+ 提供了下述插件解决了这个问题。-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <!-- 为模型生成序列化方法-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+
+        <!--可以自定义生成 model 的代码注释-->
+        <commentGenerator>
+            <!-- 去掉注解中的生成日期 -->
+            <property name="suppressDate" value="true"/>
+            <!--关闭注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="${datasource.driver-class-name}"
+                        connectionURL="${datasource.url}"
+                        userId="${datasource.username}"
+                        password="${datasource.password}">
+            <!-- 不同库中有同名表，会出现映射混乱 bug 。-->
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <!--
+            true： 无论什么情况，都是使用 BigDecimal 对应 DECIMAL 和 NUMERIC 数据类型
+            false： 默认值,
+                scale>0;length>18：使用BigDecimal;
+                scale=0;length[10,18]：使用Long；
+                scale=0;length[5,9]：使用Integer；
+                scale=0;length<5：使用Short；
+            -->
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- PO 类的相关设置 -->
+        <javaModelGenerator targetProject="src"
+                            targetPackage="${po.package}">
+            <!-- 在 targetPackage 的基础上，根据数据库的 schema 再生成一层 package，最终生成的类放在这个 package下，默认为false  -->
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- Mapper.xml 配置文件的相关设置 -->
+        <sqlMapGenerator targetProject="src"
+                         targetPackage="${xml.package}">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- DAO 接口的相关设置-->
+        <javaClientGenerator targetProject="src"
+                             targetPackage="${dao.package}"
+                             type="${dao.type}">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+<!--        &lt;!&ndash;生成对应表及类名&ndash;&gt;-->
+<!--        <table tableName="mall_address"-->
+<!--               domainObjectName="AddressInfo"-->
+<!--               mapperName="AddressInfoDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_admin"-->
+<!--               domainObjectName="AdminInfo"-->
+<!--               mapperName="AdminInfoDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_cart"-->
+<!--               domainObjectName="Cart"-->
+<!--               mapperName="CartDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_category"-->
+<!--               domainObjectName="Category"-->
+<!--               mapperName="CategoryDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_goods"-->
+<!--               domainObjectName="Goods"-->
+<!--               mapperName="GoodsDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_order"-->
+<!--               domainObjectName="Orders"-->
+<!--               mapperName="OrdersDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="mall_user"-->
+<!--               domainObjectName="User"-->
+<!--               mapperName="UserDao"-->
+<!--               enableCountByExample="true"-->
+<!--               enableUpdateByExample="true"-->
+<!--               enableDeleteByExample="true"-->
+<!--               enableSelectByExample="true">-->
+<!--            <property name="ignoreQualifiersAtRuntime" value="true"/>-->
+<!--            &lt;!&ndash; 自增 ID 回填&ndash;&gt;-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+        <table tableName="mall_order_item"
+                       domainObjectName="OrderDetail"
+                       mapperName="OrderDetailDao"
+                       enableCountByExample="true"
+                       enableUpdateByExample="true"
+                       enableDeleteByExample="true"
+                       enableSelectByExample="true">
+                    <property name="ignoreQualifiersAtRuntime" value="true"/>
+                    <!-- 自增 ID 回填-->
+                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+                </table>
+    </context>
+</generatorConfiguration>

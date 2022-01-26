@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wry.dao.OrderDetailDao">
+<resultMap id="order_detail" type="com.wry.domain.OrderDetail" autoMapping="true">
+<!--    为订单对象赋值-->
+        <association property="orders"
+                     javaType="com.wry.domain.Orders"
+                     column="orderid"
+                     autoMapping="true"
+                     select="com.wry.dao.OrdersDao.getOrderById"/>
+<!--    为商品对象赋值-->
+    <association property="goods"
+                 javaType="com.wry.domain.Goods"
+                 column="goodsid"
+                 autoMapping="true"
+                 select="com.wry.dao.GoodsDao.selectByPrimaryKey"/>
+</resultMap>
+<!--    查询订单明细-->
+    <select id="findOrderDetailVById" resultMap="order_detail">
+        select * from mall_order_item where orderid=#{orderid}
+    </select>
+
+</mapper>

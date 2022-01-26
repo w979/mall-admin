@@ -1,0 +1,34 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wry.dao.OrdersDao">
+    <resultMap id="orders_user" type="com.wry.domain.Orders" autoMapping="true">
+            <association property="user"
+                         column="userid"
+                         autoMapping="true"
+                         javaType="com.wry.domain.User"
+                         select="com.wry.dao.UserDao.selectByPrimaryKey"/>
+    </resultMap>
+<select id="getOrders" resultMap="orders_user">
+    select *from mall_order
+    <where>
+        <if test="orderno != null">
+             and orderno like concat('%',#{orderno},'%')
+        </if>
+        <if test="startTime != null">
+             and ordertime>=#{startTime}
+        </if>
+        <if test="endTime != null">
+             and ordertime&lt;=#{endTime}
+        </if>
+        <if test="status != null and status != 0">
+             and status=#{status}
+        </if>
+    </where>
+</select>
+
+<!--    根据id查询关联的用户-->
+    <select id="getOrderById" resultMap="orders_user">
+        select *from mall_order where id=#{id}
+    </select>
+</mapper>
